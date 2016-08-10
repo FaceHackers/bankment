@@ -9,4 +9,12 @@ class AdminController extends Controller
         $data  = $admin->readaccount();
         $this->view("admin", $data);
     }
+    //查看戶頭餘額
+    function readbalance()
+    {
+        $show_id = $_GET['show_id'];
+        $admin   = $this->model("Account");
+        $data    = $admin->readbalance($show_id);
+        $this->view("readbalance", $data);
+    }
 }
