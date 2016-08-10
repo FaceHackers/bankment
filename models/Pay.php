@@ -38,4 +38,16 @@ class Pay
 
         return $data;
     }
+    //顯示戶頭明細
+    function readpay($show_id)
+    {
+        $sql  = "SELECT * FROM `pay` WHERE account = :account Order by `date`";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bindValue(':account', $show_id);
+        $stmt->execute();
+        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        $this->pdoo->closeConnection;
+
+        return $data;
+    }
 }

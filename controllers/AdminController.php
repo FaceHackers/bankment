@@ -73,4 +73,12 @@ class AdminController extends Controller
     		exit;
     	}
     }
+    //顯示戶頭明細
+    function readpay()
+    {
+        $show_id = $_GET['show_id'];
+        $admin   = $this->model("Pay");
+        $data    = $admin->readpay($show_id);
+        $this->view("readpay", $data);
+    }
 }
