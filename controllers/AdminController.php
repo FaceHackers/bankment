@@ -40,4 +40,13 @@ class AdminController extends Controller
         $addpay        = $pay->eposit($account, $eposit, $date);
         $this->index();
     }
+    //顯示戶頭提款畫面
+    function readispensing()
+    {
+        $show_id = $_GET['show_id'];
+        $admin   = $this->model("Account");
+
+        $data    = $admin->readaccountid($show_id);
+        $this->view("deldispensing", $data);
+    }
 }
