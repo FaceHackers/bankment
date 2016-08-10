@@ -46,4 +46,19 @@ class Account
 
         return $data;
     }
+    //戶頭存款
+    function addeposit()
+    {
+        $eposit        = $_POST['eposit'];
+        $account       = $_POST['account'];
+        $date          = date ("Y-m-d H:i:s");
+
+        $admin         = $this->model("Account");
+        $account_id    = $admin->account($account);
+        $newbalance    = $account_id["balance"] + $eposit;
+        $pay           = $this->model("Pay");
+        $updatebalance = $admin->updatebalance($account, $newbalance);
+        $addpay        = $pay->eposit($account, $eposit, $date);
+        $this->index();
+    }
 }
