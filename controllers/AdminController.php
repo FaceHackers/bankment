@@ -17,4 +17,12 @@ class AdminController extends Controller
         $data    = $admin->readbalance($show_id);
         $this->view("readbalance", $data);
     }
+    //顯示戶頭存款畫面
+    function readeposit()
+    {
+        $show_id = $_GET['show_id'];
+        $admin   = $this->model("Account");
+        $data    = $admin->readaccountid($show_id);
+        $this->view("addeposit", $data);
+    }
 }

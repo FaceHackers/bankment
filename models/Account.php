@@ -34,4 +34,16 @@ class Account
 
         return $data;
     }
+    //顯示戶頭存款畫面
+    public function readaccountid($show_id)
+    {
+        $sql  ="SELECT * FROM `account` WHERE account = :account";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bindValue(':account', $show_id);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        $this->pdoo->closeConnection();
+
+        return $data;
+    }
 }
