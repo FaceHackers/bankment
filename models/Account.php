@@ -46,19 +46,49 @@ class Account
 
         return $data;
     }
-    //戶頭存款
-    function addeposit()
+    //查詢戶頭帳號
+    public function account($account)
     {
-        $eposit        = $_POST['eposit'];
-        $account       = $_POST['account'];
-        $date          = date ("Y-m-d H:i:s");
+        $sql  = "SELECT * FROM `account` WHERE account = :account";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bindValue(':account', $account);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        $this->pdoo->closeConnection();
 
-        $admin         = $this->model("Account");
-        $account_id    = $admin->account($account);
-        $newbalance    = $account_id["balance"] + $eposit;
-        $pay           = $this->model("Pay");
-        $updatebalance = $admin->updatebalance($account, $newbalance);
-        $addpay        = $pay->eposit($account, $eposit, $date);
-        $this->index();
+        return $data;
+    }
+    //更改戶頭餘額
+    public function updatebalance($account, $newbalance)
+    {
+        try {
+            $this->con->beginTransaction();
+
+            $sql  = "SELECT `account` FROM `account` WHERE account = :account FOR UPDATE";
+            $stmt = $this->con->prepare($sql);
+            $stmt->bindValue(':account', $account);
+            $stmt->execute();
+            $result = $stmt->fetch();
+
+            $sql  = "UPDATE `account` SET `balance`= :balance WHERE `account`= :account";
+            $stmt = $this->con->prepare($sql);
+            $stmt->bindValue(':balance', $newbalance);
+            $stmt->bindValue(':account', $account);
+            $result = $stmt->execute();
+
+    	    $this->pdoo->closeConnection();
+
+    	    $this->con->commit();
+
+    	    if($result) {
+    	        return true;
+	        }else{
+	            throw new Exception("你出錯了!");
+	        }
+
+        } catch (Exception $error) {
+            $this->con->rollBack();
+            $error->getMessage();
+        }
     }
 }

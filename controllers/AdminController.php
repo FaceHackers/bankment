@@ -49,4 +49,28 @@ class AdminController extends Controller
         $data    = $admin->readaccountid($show_id);
         $this->view("deldispensing", $data);
     }
+        //戶頭提款
+    function deldispensing()
+    {
+        $dispensing  = $_POST['dispensing'];
+        $account     = $_POST['account'];
+        $date        = date ("Y-m-d H:i:s");
+
+        $admin       = $this->model("Account");
+        $pay         = $this->model("Pay");
+        $error       = $this->model("Session");
+        $account_id  = $admin->account($account);
+
+        $newbalance  = $account_id["balance"] - $dispensing;
+        if ($newbalance >= $dispensing) {
+            $updatebalance = $admin->updatebalance($account, $newbalance);
+            $addpay        = $pay->dispensingpay($account, $dispensing, $date);
+            $this->index();
+        }
+    	else {
+            $errorr = $error->sessionErrorAction("error");
+    		header("location: readispensing?show_id=$account");
+    		exit;
+    	}
+    }
 }
