@@ -1,7 +1,9 @@
 <?php
-require_once "core/App.php";
-require_once "core/Config.php";
-require_once "core/Controller.php";
+
+require "core/App.php";
+require "core/Config.php";
+require "core/Controller.php";
+
 date_default_timezone_set("Asia/Taipei");
 
 $app = new App();
