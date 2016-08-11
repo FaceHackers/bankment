@@ -30,3 +30,13 @@ From : https://github.com/ChungYoProbies/payment
 MySQL 交易功能 Transaction 說明
 ---
 資料庫的交易(Transaction)功能，能確保多個 SQL 指令，全部執行成功，或全部不執行，不會因為一些意外狀況，而只執行一部份指令，造成資料異常。
+
+
+LOCK IN SHARE MODE (加共享鎖)
+---
+ 1. 在 select 過程遇到的資料列加上共享鎖。
+ 2. 加上共享鎖的資料，其他連線還是能讀取。
+ 3. 加上共享鎖的資料，也允許其他連線再執行 select ... lock in share mode
+
+[情況1] 有一交易A正在進行中，並異動某些資料列，例如 update ...where id=1，但尚未commit。
+一般情形，其他連線 select...where id=1，會立即得到資料。但其他連線若下達 select...where id=1 lock in share mode，則須等交易A執行 commit 後，結果才會出來。
