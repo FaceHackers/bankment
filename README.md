@@ -40,3 +40,9 @@ LOCK IN SHARE MODE (加共享鎖)
 
 [情況1] 有一交易A正在進行中，並異動某些資料列，例如 update ...where id=1，但尚未commit。
 一般情形，其他連線 select...where id=1，會立即得到資料。但其他連線若下達 select...where id=1 lock in share mode，則須等交易A執行 commit 後，結果才會出來。
+
+FOR UPDATE (加排它鎖)
+---
+1. 在遇到的資料列加上排他鎖。
+2. 加上排他鎖的資料，其他連線能用普通的 select ... 讀取鎖定的資料，但不能用 select ... lock in share mode 讀取鎖定的資料 ( select ... from ... for update 當然也不行)。
+3. 所以排他鎖跟共享鎖主要的差異，在於是否允許其他連線使用 select ... lock in share mode 讀取鎖定的資料。
