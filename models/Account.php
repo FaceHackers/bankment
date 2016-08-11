@@ -23,31 +23,6 @@ class Account
         return $data;
     }
 
-    //查看戶頭餘額
-    public function readBalance($show_id)
-    {
-        $sql  = "SELECT * FROM `account` WHERE account = :account";
-        $stmt = $this->con->prepare($sql);
-        $stmt->bindValue(':account', $show_id);
-        $stmt->execute();
-        $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        $this->pdo->closeConnection();
-
-        return $data;
-    }
-
-    //顯示戶頭存款畫面
-    public function readAccountid($show_id)
-    {
-        $sql  ="SELECT * FROM `account` WHERE account = :account";
-        $stmt = $this->con->prepare($sql);
-        $stmt->bindValue(':account', $show_id);
-        $stmt->execute();
-        $data = $stmt->fetch(PDO::FETCH_ASSOC);
-        $this->pdo->closeConnection();
-
-        return $data;
-    }
 
     //查詢戶頭帳號
     public function getAccount($account)
@@ -74,12 +49,12 @@ class Account
             $stmt->bindValue(':account', $account);
             $stmt->execute();
             $data = $stmt->fetch();
-            sleep(5);
+            //sleep(5);
             if ($data['balance'] - $dispensing >= 0) {
-                $sql  = "UPDATE `account` SET `balance`= `balance` - :balance
+                $sql  = "UPDATE `account` SET `balance`= `balance` - :dispensing
                          WHERE `account`= :account";
                 $stmt = $this->con->prepare($sql);
-                $stmt->bindValue(':balance', $dispensing, PDO::PARAM_INT);
+                $stmt->bindValue(':dispensing', $dispensing, PDO::PARAM_INT);
                 $stmt->bindValue(':account', $account);
                 $result = $stmt->execute();
 
@@ -94,6 +69,7 @@ class Account
             $this->con->rollBack();
             $error->getMessage();
         }
+
         return $result;
     }
 
@@ -103,16 +79,16 @@ class Account
         try {
             $this->con->beginTransaction();
 
-            $sql  = "SELECT * FROM `account` WHERE account = :account" . "LOCK IN SHARE MODE";
+            $sql  = "SELECT * FROM `account` WHERE account = :account LOCK IN SHARE MODE";
             $stmt = $this->con->prepare($sql);
             $stmt->bindValue(':account', $account);
 
             $result = $stmt->fetch();
             sleep(5);
-            $sql  = "UPDATE `account` SET `balance`= `balance` + :balance
+            $sql  = "UPDATE `account` SET `balance`= `balance` + :eposit
                      WHERE `account`= :account";
             $stmt = $this->con->prepare($sql);
-            $stmt->bindValue(':balance', $eposit, PDO::PARAM_INT);
+            $stmt->bindValue(':eposit', $eposit, PDO::PARAM_INT);
             $stmt->bindValue(':account', $account);
             $result = $stmt->execute();
 

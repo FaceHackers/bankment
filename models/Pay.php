@@ -14,11 +14,20 @@ class Pay
     //新增存款明細
     function eposit($account, $eposit, $date)
     {
-        $sql  = "INSERT INTO `pay` (`account`,`dispensing`,`deposit`,`date`) VALUES (:account, :dispensing, :eposit, :date)";
+        $sql  = "SELECT * FROM `account` WHERE account = :account";
+        $stmt = $this->con->prepare($sql);
+        $stmt->bindValue(':account', $account);
+        $stmt->execute();
+        $data = $stmt->fetch(PDO::FETCH_ASSOC);
+        $balance = $data['balance'];
+        $newbalance = $balance + $eposit;
+
+        $sql  = "INSERT INTO `pay` (`account`,`dispensing`,`deposit`,`balance`,`date`) VALUES (:account, :dispensing, :eposit, :balance, :date)";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(':account', $account);
         $stmt->bindValue(':dispensing','0');
     	$stmt->bindValue(':eposit', $eposit);
+    	$stmt->bindValue(':balance', $newbalance);
     	$stmt->bindValue(':date', $date);
         $data = $stmt->execute();
         $this->pdo->closeConnection();

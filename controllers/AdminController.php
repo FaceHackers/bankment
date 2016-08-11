@@ -15,7 +15,7 @@ class AdminController extends Controller
     {
         $show_id = $_GET['show_id'];
         $admin   = $this->model("Account");
-        $data    = $admin->readBalance($show_id);
+        $data    = $admin->getAccount($show_id);
         $this->view("readbalance", $data);
     }
 
@@ -24,7 +24,7 @@ class AdminController extends Controller
     {
         $show_id = $_GET['show_id'];
         $admin   = $this->model("Account");
-        $data    = $admin->readAccountid($show_id);
+        $data    = $admin->getAccount($show_id);
         $this->view("addeposit", $data);
     }
 
@@ -37,7 +37,6 @@ class AdminController extends Controller
 
         $admin         = $this->model("Account");
         $account_id    = $admin->getAccount($account);
-
         $pay           = $this->model("Pay");
         $updatebalance = $admin->updateEposit($account, $eposit);
         $addpay        = $pay->eposit($account, $eposit, $date);
@@ -50,7 +49,7 @@ class AdminController extends Controller
         $show_id = $_GET['show_id'];
         $admin   = $this->model("Account");
 
-        $data    = $admin->readAccountid($show_id);
+        $data    = $admin->getAccount($show_id);
         $this->view("deldispensing", $data);
     }
 
