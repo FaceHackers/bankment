@@ -6,51 +6,56 @@ class AdminController extends Controller
     function index()
     {
         $admin = $this->model("Account");
-        $data  = $admin->readaccount();
+        $data  = $admin->readAccount();
         $this->view("admin", $data);
     }
+
     //查看戶頭餘額
-    function readbalance()
+    function readBalance()
     {
         $show_id = $_GET['show_id'];
         $admin   = $this->model("Account");
-        $data    = $admin->readbalance($show_id);
+        $data    = $admin->readBalance($show_id);
         $this->view("readbalance", $data);
     }
+
     //顯示戶頭存款畫面
-    function readeposit()
+    function readePosit()
     {
         $show_id = $_GET['show_id'];
         $admin   = $this->model("Account");
-        $data    = $admin->readaccountid($show_id);
+        $data    = $admin->readAccountid($show_id);
         $this->view("addeposit", $data);
     }
-     //戶頭存款
-    function addeposit()
+
+    //戶頭存款
+    function addePosit()
     {
         $eposit        = $_POST['eposit'];
         $account       = $_POST['account'];
         $date          = date ("Y-m-d H:i:s");
 
         $admin         = $this->model("Account");
-        $account_id    = $admin->account($account);
-        $newbalance    = $account_id["balance"] + $eposit;
+        $account_id    = $admin->getAccount($account);
+
         $pay           = $this->model("Pay");
-        $updatebalance = $admin->updatebalance($account, $newbalance);
+        $updatebalance = $admin->updateEposit($account, $eposit);
         $addpay        = $pay->eposit($account, $eposit, $date);
         $this->index();
     }
+
     //顯示戶頭提款畫面
-    function readispensing()
+    function readIspensing()
     {
         $show_id = $_GET['show_id'];
         $admin   = $this->model("Account");
 
-        $data    = $admin->readaccountid($show_id);
+        $data    = $admin->readAccountid($show_id);
         $this->view("deldispensing", $data);
     }
-        //戶頭提款
-    function deldispensing()
+
+    //戶頭提款
+    function deldIspensing()
     {
         $dispensing  = $_POST['dispensing'];
         $account     = $_POST['account'];
@@ -58,27 +63,27 @@ class AdminController extends Controller
 
         $admin       = $this->model("Account");
         $pay         = $this->model("Pay");
-        $error       = $this->model("Session");
-        $account_id  = $admin->account($account);
 
-        $newbalance  = $account_id["balance"] - $dispensing;
-        if ($newbalance >= $dispensing) {
-            $updatebalance = $admin->updatebalance($account, $newbalance);
-            $addpay        = $pay->dispensingpay($account, $dispensing, $date);
+        $result = $admin->updatedIspensing($account, $dispensing);
+        $account_id = $admin->getAccount($account);
+
+        if ($result != 0) {
+            $addpay = $pay->dispensingPay($account, $dispensing, $date);
             $this->index();
-        }
-    	else {
+        } else {
+    	    $error  = $this->model("Session");
             $errorr = $error->sessionErrorAction("error");
     		header("location: readispensing?show_id=$account");
     		exit;
     	}
     }
+
     //顯示戶頭明細
-    function readpay()
+    function readPay()
     {
         $show_id = $_GET['show_id'];
         $admin   = $this->model("Pay");
-        $data    = $admin->readpay($show_id);
+        $data    = $admin->readPay($show_id);
         $this->view("readpay", $data);
     }
 }
