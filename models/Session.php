@@ -1,7 +1,7 @@
 <?php
+
 class Session
 {
-
     public function sessionErrorAction($info)
     {
         if ($info == "error") {
