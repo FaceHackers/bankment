@@ -16,10 +16,10 @@
             <?php for ($i = 0 ; $i < count($data) ; $i++) : ?>
             <tr>
                 <td class="text-left"><?=htmlspecialchars($data[$i]["account"]);?></td>
-                <td class="text-left" ><a href="readeposit?show_id=<?=htmlspecialchars($data[$i]["account"]);?>">存款</a></td>
-                <td class="text-left" ><a href="readispensing?show_id=<?=htmlspecialchars($data[$i]["account"]);?>">提款</a></td>
-                <td class="text-left" ><a href="readbalance?show_id=<?=htmlspecialchars($data[$i]["account"]);?>">查看餘額</a></td>
-                <td class="text-left" ><a href="readpay?show_id=<?=htmlspecialchars($data[$i]["account"]);?>">帳目明細</a></td>
+                <td class="text-left" ><a href="readEposit?show_id=<?=htmlspecialchars($data[$i]["account"]);?>">存款</a></td>
+                <td class="text-left" ><a href="readIspensing?show_id=<?=htmlspecialchars($data[$i]["account"]);?>">提款</a></td>
+                <td class="text-left" ><a href="readBalance?show_id=<?=htmlspecialchars($data[$i]["account"]);?>">查看餘額</a></td>
+                <td class="text-left" ><a href="readPay?show_id=<?=htmlspecialchars($data[$i]["account"]);?>">帳目明細</a></td>
             </tr>
             <?php endfor; ?>
         </tbody>

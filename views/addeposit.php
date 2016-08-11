@@ -9,7 +9,7 @@
 
     <h1>戶頭存款</h1>
 
-    <form method="post" name="form" action="addeposit">
+    <form method="post" name="form" action="addEposit">
      <div class="col-2">
         <label>
              戶頭帳號

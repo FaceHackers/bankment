@@ -7,7 +7,7 @@
     <?php $row = $data;?>
     <div id="wrapper">
     <h1>戶頭提款</h1>
-    <form method="post" name="form" action="deldispensing">
+    <form method="post" name="form" action="deldIspensing">
      <div class="col-2">
         <label>
              戶頭帳號
