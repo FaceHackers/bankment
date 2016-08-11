@@ -39,6 +39,7 @@ class AdminController extends Controller
         $account_id    = $admin->getAccount($account);
         $pay           = $this->model("Pay");
         $updatebalance = $admin->updateEposit($account, $eposit);
+
         $addpay        = $pay->eposit($account, $eposit, $date);
         $this->index();
     }

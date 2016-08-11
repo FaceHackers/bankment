@@ -20,14 +20,13 @@ class Pay
         $stmt->execute();
         $data = $stmt->fetch(PDO::FETCH_ASSOC);
         $balance = $data['balance'];
-        $newbalance = $balance + $eposit;
 
         $sql  = "INSERT INTO `pay` (`account`,`dispensing`,`deposit`,`balance`,`date`) VALUES (:account, :dispensing, :eposit, :balance, :date)";
         $stmt = $this->con->prepare($sql);
         $stmt->bindValue(':account', $account);
         $stmt->bindValue(':dispensing','0');
     	$stmt->bindValue(':eposit', $eposit);
-    	$stmt->bindValue(':balance', $newbalance);
+    	$stmt->bindValue(':balance', $balance);
     	$stmt->bindValue(':date', $date);
         $data = $stmt->execute();
         $this->pdo->closeConnection();

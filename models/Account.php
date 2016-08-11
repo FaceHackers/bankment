@@ -23,7 +23,6 @@ class Account
         return $data;
     }
 
-
     //查詢戶頭帳號
     public function getAccount($account)
     {
@@ -79,7 +78,8 @@ class Account
         try {
             $this->con->beginTransaction();
 
-            $sql  = "SELECT * FROM `account` WHERE account = :account LOCK IN SHARE MODE";
+            $sql  = "SELECT * FROM `account` WHERE account = :account" .
+                        "FOR UPDATE";
             $stmt = $this->con->prepare($sql);
             $stmt->bindValue(':account', $account);
 
