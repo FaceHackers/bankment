@@ -13,12 +13,11 @@
                 </tr>
             </thead>
         <tbody class="table-hover">
-        <?php for ($i = 0 ; $i < count($data) ; $i++) : ?>
+        <?php $row = $data;?>
             <tr>
-                <td class="text-left"><?=htmlspecialchars($data[$i]["account"]);?></td>
-                <td class="text-left"><?=htmlspecialchars($data[$i]["balance"]);?></td>
+                <td class="text-left"><?=htmlspecialchars($row["account"]);?></td>
+                <td class="text-left"><?=htmlspecialchars($row["balance"]);?></td>
             </tr>
-        <?php endfor; ?>
         </tbody>
     </table>
     </body>

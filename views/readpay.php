@@ -11,6 +11,7 @@
                     <th class="text-left">帳號</th>
                     <th class="text-left">出款</th>
                     <th class="text-left">入款</th>
+                    <th class="text-left">餘額</th>
                     <th class="text-left">處理日期</th>
                 </tr>
             </thead>
@@ -20,6 +21,7 @@
                 <td class="text-left"><?=htmlspecialchars($data[$i]["account"]);?></td>
                 <td class="text-left"><?=htmlspecialchars($data[$i]["dispensing"]);?></td>
                 <td class="text-left"><?=htmlspecialchars($data[$i]["deposit"]);?></td>
+                <td class="text-left"><?=htmlspecialchars($data[$i]["balance"]);?></td>
                 <td class="text-left"><?=htmlspecialchars($data[$i]["date"]);?></td>
             </tr>
             <?php endfor; ?>
