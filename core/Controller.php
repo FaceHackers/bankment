@@ -8,12 +8,14 @@ class Controller
         require_once "models/$model.php";
         return new $model ();
     }
+
     public function view($view, $data = Array())
     {
         $config = $this->config();
         require_once "views/$view.php";
     }
+
     public function config(){
-        return new config();
+        return new Config();
     }
 }
