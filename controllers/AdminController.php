@@ -64,8 +64,9 @@ class AdminController extends Controller
         $admin       = $this->model("Account");
         $pay         = $this->model("Pay");
 
-        $result = $admin->updatedIspensing($account, $dispensing);
         $account_id = $admin->getAccount($account);
+        $version = $account_id['version'];
+        $result = $admin->updatedIspensing($account, $dispensing, $version);
 
         if ($result != 0) {
             $addpay = $pay->dispensingPay($account, $dispensing, $date);

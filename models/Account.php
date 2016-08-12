@@ -37,30 +37,28 @@ class Account
     }
 
     //更改戶頭餘額提款
-    public function updatedIspensing($account, $dispensing)
+    public function updatedIspensing($account, $dispensing, $version)
     {
         $result = 0;
         try {
             $this->con->beginTransaction();
 
-            $sql  = "SELECT * FROM `account` WHERE account = :account FOR UPDATE";
+            $sql  = "SELECT * FROM `account` WHERE account = :account";
             $stmt = $this->con->prepare($sql);
             $stmt->bindValue(':account', $account);
             $stmt->execute();
             $data = $stmt->fetch();
-            //sleep(5);
-            if ($data['balance'] - $dispensing >= 0) {
-                $sql  = "UPDATE `account` SET `balance`= `balance` - :dispensing
-                         WHERE `account`= :account";
+            sleep(5);
+
+                $sql  = "UPDATE `account` SET `balance` = `balance` - :dispensing, `version`= `version` + 1
+                         WHERE `account` = :account AND `version` = :version";
                 $stmt = $this->con->prepare($sql);
                 $stmt->bindValue(':dispensing', $dispensing, PDO::PARAM_INT);
                 $stmt->bindValue(':account', $account);
+                $stmt->bindValue(':version', $version);
                 $result = $stmt->execute();
-
-                //return $result;
-            } else {
-                throw new Exception('餘額不足');
-                //return false;
+            if ($stmt->rowCount() ==0) {
+                throw new Exception("update fail");
             }
     	    $this->pdo->closeConnection();
     	    $this->con->commit();
