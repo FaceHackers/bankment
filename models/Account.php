@@ -8,7 +8,7 @@ class Account
     public function __construct()
     {
         $this->pdo = new MyPDO();
-        $this->con  = $this->pdo->getConnection();
+        $this->con = $this->pdo->getConnection();
     }
 
     //讀取戶頭帳號
@@ -48,7 +48,7 @@ class Account
             $stmt->bindValue(':account', $account);
             $stmt->execute();
             $data = $stmt->fetch();
-            //sleep(5);
+
             if ($data['balance'] - $dispensing >= 0) {
                 $sql  = "UPDATE `account` SET `balance`= `balance` - :dispensing
                          WHERE `account`= :account";
@@ -56,11 +56,8 @@ class Account
                 $stmt->bindValue(':dispensing', $dispensing, PDO::PARAM_INT);
                 $stmt->bindValue(':account', $account);
                 $result = $stmt->execute();
-
-                //return $result;
             } else {
                 throw new Exception('餘額不足');
-                //return false;
             }
     	    $this->pdo->closeConnection();
     	    $this->con->commit();
@@ -79,12 +76,11 @@ class Account
             $this->con->beginTransaction();
 
             $sql  = "SELECT * FROM `account` WHERE account = :account" .
-                        "FOR UPDATE";
+                    "LOCK IN SHARE MODE";
             $stmt = $this->con->prepare($sql);
             $stmt->bindValue(':account', $account);
-
             $result = $stmt->fetch();
-            sleep(5);
+
             $sql  = "UPDATE `account` SET `balance`= `balance` + :eposit
                      WHERE `account`= :account";
             $stmt = $this->con->prepare($sql);

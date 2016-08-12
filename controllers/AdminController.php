@@ -31,15 +31,14 @@ class AdminController extends Controller
     //戶頭存款
     function addePosit()
     {
-        $eposit        = $_POST['eposit'];
-        $account       = $_POST['account'];
-        $date          = date ("Y-m-d H:i:s");
+        $eposit  = $_POST['eposit'];
+        $account = $_POST['account'];
+        $date    = date ("Y-m-d H:i:s");
 
         $admin         = $this->model("Account");
         $account_id    = $admin->getAccount($account);
         $pay           = $this->model("Pay");
         $updatebalance = $admin->updateEposit($account, $eposit);
-
         $addpay        = $pay->eposit($account, $eposit, $date);
         $this->index();
     }
@@ -61,10 +60,10 @@ class AdminController extends Controller
         $account     = $_POST['account'];
         $date        = date ("Y-m-d H:i:s");
 
-        $admin       = $this->model("Account");
-        $pay         = $this->model("Pay");
+        $admin = $this->model("Account");
+        $pay   = $this->model("Pay");
 
-        $result = $admin->updatedIspensing($account, $dispensing);
+        $result     = $admin->updatedIspensing($account, $dispensing);
         $account_id = $admin->getAccount($account);
 
         if ($result != 0) {
