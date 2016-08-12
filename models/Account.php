@@ -49,16 +49,22 @@ class Account
             $stmt->execute();
             $data = $stmt->fetch();
             sleep(5);
-
+            if ($data['balance'] - $dispensing >= 0) {
                 $sql  = "UPDATE `account` SET `balance` = `balance` - :dispensing, `version`= `version` + 1
                          WHERE `account` = :account AND `version` = :version";
                 $stmt = $this->con->prepare($sql);
                 $stmt->bindValue(':dispensing', $dispensing, PDO::PARAM_INT);
                 $stmt->bindValue(':account', $account);
                 $stmt->bindValue(':version', $version);
-                $result = $stmt->execute();
-            if ($stmt->rowCount() ==0) {
-                throw new Exception("update fail");
+                $stmt->execute();
+                $count = $stmt->rowCount();
+            if ($count != 1){
+
+                throw new Exception("失敗");
+            }
+            else {
+                throw new Exception('餘額不足');
+            }
             }
     	    $this->pdo->closeConnection();
     	    $this->con->commit();
@@ -67,7 +73,7 @@ class Account
             $error->getMessage();
         }
 
-        return $result;
+        return $count;
     }
 
     //更改戶頭餘額存款
